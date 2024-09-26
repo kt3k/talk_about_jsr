@@ -1,14 +1,14 @@
 dest: docs
 port: 30000
-title: JSR について
-description: JSR について
+title: JSR の話
+description: JSR の話
 ogImage: "https://kt3k.github.io/talk_about_jsr/assets/og-image.png"
 ogImageWidth: 959
 ogImageHeight: 626
 twitter: kt3k
 favicon: ./assets/logo.svg
 remarkConfig:
-  slideNumberFormat: 'JSR の紹介 - %current% / %total%'
+  slideNumberFormat: 'JSR の話 - %current% / %total%'
 css: |
   body {
     font-family: 'Avenir Next', 'Hiragino Kaku Gothic ProN', 'Meiryo', 'メイリオ', sans-serif;

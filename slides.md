@@ -1,15 +1,13 @@
 class: middle, center
 
-<img src="./assets/logo.png" width="300" />
-
-# JSR について
+# <img src="./assets/logo.png" width="300" /> の話
 
 Yoshiya Hinosawa @kt3k
 
 ---
 class: text-4xl
 
-# Agenda
+# 目次
 
 - JSR の狙い
 - JSR の特徴
@@ -22,7 +20,7 @@ class: text-4xl
 
 - x.com / github - @kt3k
 - Deno の中の人。最近は Deno Standard Library と Deno CLI の Node 互換周り担当
-- 昔は良くサウス 37 - 38Fで働いていました (- 2019)
+- 昔はサウス 37 - 38Fで働いていました (- 2019)
 
 ---
 # npm レジストリのすごい点

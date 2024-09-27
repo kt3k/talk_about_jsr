@@ -3,8 +3,8 @@ port: 30000
 title: JSR の話
 description: JSR の話
 ogImage: "https://kt3k.github.io/talk_about_jsr/assets/og-image.png"
-ogImageWidth: 959
-ogImageHeight: 626
+ogImageWidth: 800
+ogImageHeight: 418
 twitter: kt3k
 favicon: ./assets/logo.svg
 remarkConfig:

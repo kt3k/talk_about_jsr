@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>JSR について</title>
+    <title>JSR の話</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
-    <meta property="og:title" content="JSR について"/>
+    <meta property="og:title" content="JSR の話"/>
     
     <meta property="og:image" content="https://kt3k.github.io/talk_about_jsr/assets/og-image.png"/>
     
-    <meta property="og:image:width" content="959"/>
+    <meta property="og:image:width" content="800"/>
     
     
-    <meta property="og:image:height" content="626"/>
+    <meta property="og:image:height" content="418"/>
     
     
     
-    <meta property="og:description" content="JSR について" />
+    <meta property="og:description" content="JSR の話" />
     
     
     <meta name="twitter:creator" content="@kt3k"/>
@@ -96,19 +96,18 @@ code.remark-code {
   <body>
     <textarea id="source" style="display: none">class: middle, center
 
-<img src="./assets/logo.png" width="300" />
-
-# JSR について
+# <img src="./assets/logo.png" width="300" /> の話
 
 Yoshiya Hinosawa @kt3k
 
 ---
 class: text-4xl
 
-# Agenda
+# 目次
 
 - JSR の狙い
 - JSR の特徴
+- Deno と JSR
 
 ---
 
@@ -118,25 +117,25 @@ class: text-4xl
 
 - x.com / github - @kt3k
 - Deno の中の人。最近は Deno Standard Library と Deno CLI の Node 互換周り担当
-- 昔は良くサウス 37 - 38Fで働いていました (- 2019)
+- 昔サウス 36F - 38Fで働いていました (- 2019)
 
 ---
-# npm レジストリのすごい点
+## npm レジストリのすごいところ
 
-- プログラミング界の最大のパッケージレジストリ
+- 最大のソフトウェアパッケージレジストリ
 - 300万パッケージが存在
 
 <img src="./assets/modulecounts.png" width="500" />
 
 ---
 
-# npm レジストリのよく無い点
+## npm レジストリのよく無いところ
 
-- ES6 も TS も無い時にデザインされたため古くなっている
+- ES6 や TS が無い頃にデザインされたままあまり変わっていない
 - CommonJS がデフォルト
-  - CJS と ESM をサポートするための仕組み (Conditional exports) はあるが複雑
+  - CJS と ESM をサポートするための仕組みはあるが複雑 (Conditional exports)
 - TypeScript に関するサポートが無い
-  - 自前で d.ts をビルド or DefinitelyTyped を手動でメンテ -> 辛い
+  - 自前で d.ts をビルド or DefinitelyTyped を手動でメンテナンスする -> 辛い
 
 ---
 ## npm レジストリの開発は低調(?)
@@ -188,7 +187,15 @@ JSR = JavaScript Registry
 # npm 互換性
 
 - JSR パッケージから npm パッケージを使える
+  ```
+  import chalk from "npm:chalk";
+  ```
 - npm パッケージから JSR パッケージを使える
+  ```
+  import { Hono } from "@hono/hono";
+  // JSR 版の Hono に依存できる
+  ```
+
 
 ---
 
@@ -202,12 +209,45 @@ JSR = JavaScript Registry
 
 ---
 
+## npm 互換性 (仕組み)
+
+- Node から JSR パッケージを使う場合
+  ```
+  npx jsr add @hono/hono
+  ```
+- 上記コマンドを実行すると以下の内容の `.npmrc` ファイルが作成される
+  ```
+  @jsr:registry=https://npm.jsr.io
+  ```
+
+---
+## npm 互換性 (仕組み)
+
+```
+@jsr:registry=https://npm.jsr.io
+```
+本来は特定の '@scope' をプライベートな npm レジストリに向けるための機能をうまく利用し 'JSR' レジストリから 'npm' パッケージをダウンロードさせている
+```
+"dependencies": {
+  "@hono/hono": "npm:@jsr/hono__hono@^4.6.3"
+}
+```
+`package.json` には上のように追加される
+
+
+---
+class: inverse center middle
+
+JSR 上の Hono を<br />npm package として<br />Bun から使うデモ
+
+---
+
 # TypeScript サポート
 
 - TypeScript を直接パブリッシュできる
 - トランスパイルが不要
 - d.ts は JSR が自動生成
-- TypeScript の doc コメントからドキュメントページ(APIリファレンス)を自動生成
+- TypeScript の jsdoc コメントからドキュメントページ(APIリファレンス)を自動生成
 
 --
 
@@ -217,7 +257,7 @@ JSR = JavaScript Registry
 
 ---
 
-# 複数ランタイム前提
+# 複数ランタイム
 
 - サポートしてるランタイムを JSR 上で設定できる
 
@@ -262,10 +302,9 @@ JSR = JavaScript Registry
 - ただし Node.js v22 で require(ESM) ができるようになる
 
 ---
-### デモ
+class: center middle inverse
 
-- npm 経由で使うデモ
-- publish するデモ
+TypeScript で書いたパッケージを<br />JSR にパブリッシュするデモ
 
 ---
 # Deno と JSR の関係
@@ -273,18 +312,22 @@ JSR = JavaScript Registry
 - JSR の開発者は今のところ Deno の開発者が多い
 - Deno のためのより良いレジストリを作りたいと言うのがモチベーションの1つとしてあった
 - 設計を進める中で、Deno に限らず、すべてのランタイムのためのレジストリを作るべきという目的意識に変わっていった
-- Deno は JSR でマネタイズする予定はない
 
 ---
 # Deno と JSR の関係
 
-- Deno と JSR はあくまで独立したプロジェクト
+- 現在 JSR は Deno とは独立して意思決定をする独立したプロジェクトになっている
+- GitHub も Org レベルで分かれている
   - Deno - github.com/denoland
   - JSR - github.com/jsr-io
 
+---
+# JSR から見た Deno
+
+Deno is one of runtimes
 
 ---
-# Deno にとっての JSR
+# Deno から見た JSR
 
 - Deno にとって JSR はとても重要なレジストリ
 
@@ -294,13 +337,23 @@ JSR = JavaScript Registry
 --
 - JSR に移行することでこれらの問題が解決される。
 
---
+---
+# Deno から見た JSR
+
 - Deno ユーザーは今後 JSR にパッケージを publish することが推奨
+- 旧来の https ベースのレジストリ (https://deno.land/x) は (削除されることは無いものの) 実質 非推奨
 
 ---
-# Deno にとっての JSR
+class: center middle
 
-- [What we got wrong about HTTP imports](https://deno.com/blog/http-imports)
+# Deno ❤️ JSR
+
+---
+# 余談
+
+- Deno は当初 npm レジストリをデザインミスと指摘し、その代替としての http インポートを提唱していた
+- http ベースのレジストリを(実質)非推奨化する事は先の提案に反している
+- この判断に至った経緯は以下のブログポストで解説されています<br/>[What we got wrong about HTTP imports](https://deno.com/blog/http-imports)
 
 
 ---
@@ -326,7 +379,7 @@ class: middle center
     <script src="remark.js"></script>
     
     <script>
-      window.slideshow = remark.create({"slideNumberFormat":"JSR の紹介 - %current% / %total%"})
+      window.slideshow = remark.create({"slideNumberFormat":"JSR の話 - %current% / %total%"})
     </script>
     
     <script>

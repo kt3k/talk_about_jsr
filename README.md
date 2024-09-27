@@ -1,3 +1,3 @@
-[#jsr_meetup](https://deno-ja.connpass.com/event/316018/) で発表した JSR の紹介スライドです。
+[Node学園44時限目](https://nodejs.connpass.com/event/330652/)
 
-https://kt3k.github.io/talk_jsr/
+https://kt3k.github.io/talk_about_jsr/

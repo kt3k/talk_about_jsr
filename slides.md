@@ -20,7 +20,7 @@ class: text-4xl
 <img src="./assets/hinosawa.jpg" width="180" />
 
 - x.com / github - @kt3k
-- Deno の中の人。最近は Deno Standard Library と Deno CLI の Node 互換周り担当
+- Deno の中の人。最近は Deno Standard Library と Deno 本体の Node 互換周り担当
 - 昔サウス 36F - 38Fで働いていました (- 2019)
 
 ---

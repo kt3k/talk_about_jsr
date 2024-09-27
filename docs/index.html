@@ -141,9 +141,11 @@ class: text-4xl
 ## npm レジストリの開発は低調(?)
 
 - 新機能があまり追加されていない
-- npm は2020年に github に買収された
-- 買収直前に主要メンバーが npm を去った
 - Open Source では無いので、コミュニティー主体で開発を進めることも出来ない
+
+--
+- npm は2020年に github に買収された
+- 買収直前に主要メンバーが npm を去った (開発停滞の一因かも?)
 
 ---
 
@@ -181,10 +183,11 @@ JSR = JavaScript Registry
 - npm と互換性あり
 - 複数ランタイムを意識した作り
 - レジストリ全体がオープンソース
+- provenance 機能によるセキュリティの強化
 
 ---
 
-# npm 互換性
+## npm 互換性
 
 - JSR パッケージから npm パッケージを使える
   ```
@@ -199,7 +202,7 @@ JSR = JavaScript Registry
 
 ---
 
-# npm 互換性
+## npm 互換性
 
 - JSR は npm とは別の何かではなく、npm の資産を活用しつつ拡張するもの (スーパーセット)
 
@@ -215,7 +218,7 @@ JSR = JavaScript Registry
   ```
   npx jsr add @hono/hono
   ```
-- 上記コマンドを実行すると以下の内容の `.npmrc` ファイルが作成される
+- 上記コマンドを実行すると以下の内容の `.npmrc` ファイルが手元で作成される
   ```
   @jsr:registry=https://npm.jsr.io
   ```
@@ -238,7 +241,7 @@ JSR = JavaScript Registry
 ---
 class: inverse center middle
 
-JSR 上の Hono を<br />npm package として<br />Bun から使うデモ
+JSR 上の Hono を<br />npm package として使うデモ
 
 ---
 
@@ -257,7 +260,7 @@ JSR 上の Hono を<br />npm package として<br />Bun から使うデモ
 
 ---
 
-# 複数ランタイム
+## 複数ランタイム対応
 
 - サポートしてるランタイムを JSR 上で設定できる
 
@@ -282,15 +285,16 @@ JSR 上の Hono を<br />npm package として<br />Bun から使うデモ
 - どのランタイムがサポートされているか分かる
 
 ---
-# JSR はオープンソース
+## JSR はオープンソース
 
 - https://github.com/jsr-io/jsr で開発されている
 - レジストリの全体が公開
 - セルフホストも可能
-- 機能要望、機能提案なども可能
+  - Postgres, S3互換ストレージ, Linux サーバ上で稼働
+- 機能要望・提案・Pull Request なども可能
 
 ---
-### 注意点
+## 注意点
 
 - JSR は ESM しかサポートしない
 - CJS を使っているユーザーはサポートできない
@@ -299,22 +303,22 @@ JSR 上の Hono を<br />npm package として<br />Bun から使うデモ
 - CJS からの利用が絶対必要な人は「まだ」使わないほうが良いかもしれません
 
 --
-- ただし Node.js v22 で require(ESM) ができるようになる
+- ただし Node.js v22 で require(ESM) ができるようになる [node#55085](https://github.com/nodejs/node/pull/55085)
 
 ---
 class: center middle inverse
 
-TypeScript で書いたパッケージを<br />JSR にパブリッシュするデモ
+JSR にパブリッシュするデモ
 
 ---
-# Deno と JSR の関係
+## Deno と JSR の関係
 
 - JSR の開発者は今のところ Deno の開発者が多い
 - Deno のためのより良いレジストリを作りたいと言うのがモチベーションの1つとしてあった
 - 設計を進める中で、Deno に限らず、すべてのランタイムのためのレジストリを作るべきという目的意識に変わっていった
 
 ---
-# Deno と JSR の関係
+## Deno と JSR の関係
 
 - 現在 JSR は Deno とは独立して意思決定をする独立したプロジェクトになっている
 - GitHub も Org レベルで分かれている
@@ -322,23 +326,48 @@ TypeScript で書いたパッケージを<br />JSR にパブリッシュする�
   - JSR - github.com/jsr-io
 
 ---
-# JSR から見た Deno
+## JSR から見た Deno
 
-Deno is one of runtimes
 
----
-# Deno から見た JSR
+<div class="text-center">
+  <img src="./assets/jsr-and-runtimes.png" width="500" />
 
-- Deno にとって JSR はとても重要なレジストリ
-
---
-- Deno はこれまで URL import を依存解決に用いてきたが、URL インポートでは SemVer レンジでの依存や、SemVer レンジの重複した依存の dedupe をすることが出来なかった。
-
---
-- JSR に移行することでこれらの問題が解決される。
+  <p>Deno is one of runtimes</p>
+</div>
 
 ---
-# Deno から見た JSR
+## Deno から見た JSR
+
+Deno にとって JSR はとても重要なレジストリ
+
+
+--
+Deno は JSR からの依存を解決する専用の URL スキームを導入している
+```
+import { Hono } from "jsr:@hono/hono";
+
+const app = new Hono();
+```
+
+---
+## Deno から見た JSR
+
+Deno はこれまで URL import を依存解決に用いてきた。
+
+```
+import { parse } from "https://deno.land/x/std/yaml/mod.ts";
+```
+
+
+--
+が、URL インポートではバージョンレンジでの依存や、バージョン違いのパッケージの重複排除などが実現できなかった。
+
+
+--
+JSR に移行することでこれらの問題が解決される。
+
+---
+## Deno から見た JSR
 
 - Deno ユーザーは今後 JSR にパッケージを publish することが推奨
 - 旧来の https ベースのレジストリ (https://deno.land/x) は (削除されることは無いものの) 実質 非推奨
@@ -349,7 +378,7 @@ class: center middle
 # Deno ❤️ JSR
 
 ---
-# 余談
+## 余談 (歴史)
 
 - Deno は当初 npm レジストリをデザインミスと指摘し、その代替としての http インポートを提唱していた
 - http ベースのレジストリを(実質)非推奨化する事は先の提案に反している
